@@ -1,0 +1,18 @@
+[Unit]
+Description=AI Tavern Pro Gateway (worker/index.js 原样运行于 Node)
+After=network.target
+
+[Service]
+# 目录布局（上传后）：
+#   /opt/ai-tavern/server.js        ← deploy/server.js
+#   /opt/ai-tavern/worker/index.js  ← worker/index.js（原样，零分叉）
+#   /opt/ai-tavern/tavern.env       ← LLM_API_KEY=sk-...（由你创建，chmod 600）
+WorkingDirectory=/opt/ai-tavern
+EnvironmentFile=/opt/ai-tavern/tavern.env
+ExecStart=/usr/bin/node /opt/ai-tavern/server.js
+Restart=always
+RestartSec=3
+User=ubuntu
+
+[Install]
+WantedBy=multi-user.target

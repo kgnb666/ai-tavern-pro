@@ -1,0 +1,246 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   screens.css — 应用壳与三屏布局
+   响应式断点：1180px（房间三栏 → 两栏）、900px（多栏 → 单栏 + Tab）、640px
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── 应用壳 ───────────────────────────────────────────────────────── */
+.app {
+  position: relative;
+  z-index: var(--z-content);
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.hud {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-hud);
+  display: flex;
+  flex-wrap: wrap;                           /* 窄屏时导航整行下移，不允许溢出 */
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-5);
+  border-bottom: 1px solid var(--line-hair);
+  background: linear-gradient(180deg, rgba(18,12,10,.94), rgba(18,12,10,.72));
+}
+.hud__brand { display: flex; align-items: baseline; gap: var(--sp-2); min-width: 0; }
+.hud__mark {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  color: var(--text-1);
+  letter-spacing: .02em;
+  white-space: nowrap;
+}
+.hud__sub {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  color: var(--text-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hud__right { display: flex; align-items: center; gap: var(--sp-2); flex-wrap: wrap; justify-content: flex-end; }
+.hud__nav { display: flex; gap: var(--sp-1); }
+.hud__nav .btn { min-height: 32px; padding: var(--sp-1) var(--sp-3); font-size: var(--fs-body-sm); }
+
+.main { min-height: 0; }
+
+/* 屏切换：只用 transform / opacity（design-token §6.4-1） */
+.screen { animation: screen-in var(--dur-base) var(--ease-panel) both; }
+@keyframes screen-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+.stagger > * { animation: screen-in var(--dur-base) var(--ease-panel) both; }
+.stagger > *:nth-child(1) { animation-delay: 60ms; }
+.stagger > *:nth-child(2) { animation-delay: 160ms; }
+.stagger > *:nth-child(3) { animation-delay: 260ms; }
+.stagger > *:nth-child(4) { animation-delay: 340ms; }
+
+/* 临时性骨架提示条（Stage 1 诚实标记，Stage 2 起由真实状态取代） */
+.stage-note {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-4);
+  border: 1px dashed var(--line-bronze);
+  border-radius: var(--r-2);
+  color: var(--text-2);
+  font-size: var(--fs-body-sm);
+  background: rgba(26, 36, 56, .35);
+}
+
+/* ── 屏 1：Entry ──────────────────────────────────────────────────── */
+.entry {
+  min-height: calc(100dvh - 62px);
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--sp-6);
+  padding: var(--sp-8) var(--sp-4);
+  text-align: center;
+}
+.entry__eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.entry__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  line-height: 1.1;
+  font-weight: var(--fw-title);
+  color: var(--text-1);
+  text-shadow: var(--glow-text);
+}
+.entry__sub { max-width: 52ch; color: var(--text-2); font-size: var(--fs-body-sm); }
+.entry__concept {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--sp-2);
+  max-width: 60ch;
+}
+.entry__door { margin-top: var(--sp-3); }
+.entry__hint { color: var(--text-3); font-size: var(--fs-meta); }
+
+/* ── 屏 2：Tavern World ───────────────────────────────────────────── */
+.world { padding: var(--sp-6) var(--sp-5) var(--sp-8); max-width: 1180px; margin: 0 auto; }
+.world__head { display: grid; gap: var(--sp-2); margin-bottom: var(--sp-6); }
+.world__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(268px, 1fr));
+  gap: var(--sp-5);
+  align-items: stretch;
+}
+.world__foot {
+  margin-top: var(--sp-7);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3);
+  color: var(--text-3);
+  font-size: var(--fs-meta);
+}
+
+/* 薇奥拉：唯一的非圆形状态环（persona-spec §4.1） */
+[data-agent="muse"] .ring { border-radius: 30% 70% 62% 38% / 45% 40% 60% 55%; }
+[data-agent="muse"] .agent-card__portrait { border-radius: var(--r-4) var(--r-3) var(--r-4) var(--r-3); }
+
+/* ── 屏 3：Conversation Room ──────────────────────────────────────── */
+.room {
+  display: grid;
+  grid-template-columns: 268px minmax(0, 1fr) 372px;
+  gap: var(--sp-5);
+  padding: var(--sp-5);
+  max-width: 1500px;
+  margin: 0 auto;
+  align-items: start;
+}
+.room__col { display: grid; gap: var(--sp-4); min-width: 0; }
+
+.room__agenthead { display: flex; align-items: center; gap: var(--sp-3); }
+.room__agenthead .agent-card__portrait { height: 64px; width: 64px; border-radius: var(--r-3); }
+.room__agenthead .agent-card__portrait svg { height: 54px; }
+
+.room__counts { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
+
+.room__composer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--sp-2);
+  align-items: center;
+  padding: var(--sp-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-3);
+  background: var(--bg-surface-2);
+}
+.room__input {
+  min-height: 44px;
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-2);
+  background: var(--bg-void);
+  border: 1px solid var(--line-hair);
+  color: var(--text-1);
+  font-size: var(--fs-body);
+}
+.room__input::placeholder { color: var(--text-3); }
+.room__input:disabled { color: var(--text-disabled); cursor: not-allowed; }
+
+/* Stage 6-2：事件卡（输入区上方；不进消息流） */
+.event-card {
+  padding: var(--sp-3);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent-base);
+  border-radius: var(--r-2);
+  background: var(--bg-surface-2);
+}
+.event-card__title { margin: 0 0 var(--sp-1); font-size: var(--fs-body-sm); color: var(--text-1); }
+.event-card__text { margin: 0 0 var(--sp-2); }
+.event-card__choices { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
+
+/* 移动端 Tab：默认隐藏，<900px 显示（Stage-1-plan T3：375px 断点本阶段完成） */
+.room__tabs { display: none; grid-column: 1 / -1; }
+
+@media (max-width: 1180px) {
+  .room { grid-template-columns: minmax(0, 1fr) 340px; }
+  .room__col--agent { grid-column: 1 / -1; }
+  .room__agenthead .agent-card__portrait { height: 56px; width: 56px; }
+}
+
+@media (max-width: 900px) {
+  .room { grid-template-columns: minmax(0, 1fr); padding: var(--sp-4); gap: var(--sp-4); }
+  .room__col--trace { display: none; }
+  .room__col--trace.is-active { display: grid; }
+  .room__col--agent.is-active { display: grid; }
+  .room__col--agent:not(.is-active) { display: none; }
+  .room__tabs { display: flex; gap: var(--sp-1); flex-wrap: wrap; }
+  .room__tabs .btn { min-height: 36px; padding: var(--sp-1) var(--sp-3); font-size: var(--fs-body-sm); }
+  .hud { padding: var(--sp-2) var(--sp-4); gap: var(--sp-3); }
+  .hud__sub { display: none; }
+  .hud__nav { order: 3; flex: 1 1 100%; }
+  .hud__nav .btn { flex: 1 1 auto; }
+  .world { padding: var(--sp-5) var(--sp-4) var(--sp-7); }
+}
+
+@media (max-width: 640px) {
+  .room__composer { grid-template-columns: 1fr; }
+  .room__composer .btn { width: 100%; }
+  .entry { padding: var(--sp-7) var(--sp-3); gap: var(--sp-5); }
+  .world__grid { gap: var(--sp-4); }
+  .agent-card { padding: var(--sp-4); }
+  /* 窄屏只保留最必要的状态：品牌 + 「未接入 AI」诚实标记 */
+  .hud__mark { font-size: var(--fs-body); }
+  .hud__pill--build, .hud__pill--gw { display: none; }
+  .hud__nav .btn { padding: var(--sp-1) var(--sp-2); }
+  .room { padding: var(--sp-3); }
+}
+
+/* 记忆台 / 成长档案（Stage 7：真实数据屏） */
+.screen-pad {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--sp-7) var(--sp-5);
+  display: grid;
+  gap: var(--sp-4);
+}
+.board__tabs { display: flex; gap: var(--sp-2); align-items: center; flex-wrap: wrap; }
+.board__list { display: grid; gap: var(--sp-2); }
+.board__row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--sp-3);
+  align-items: baseline;
+  padding: var(--sp-3);
+  border: 1px solid var(--line-hair);
+  border-radius: var(--r-2);
+  background: var(--bg-surface-1);
+  color: var(--text-2);
+  font-size: var(--fs-body-sm);
+}
+.board__row .board__meta { grid-column: 2; }
+.board__empty { color: var(--text-3); font-size: var(--fs-body-sm); }
+.grow__card { display: grid; gap: var(--sp-3); }

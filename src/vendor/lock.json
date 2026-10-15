@@ -1,0 +1,30 @@
+{
+  "generatedBy": "build.js --fetch-vendor",
+  "frozenAt": "2026-10-13",
+  "note": "vendor 仅在构建期获取；release 产物只内联 vueRuntime（运行版），vueFull 只作为构建期模板编译器使用，不进产物。build.js 每次 release 都会校验两者的 sha256。",
+  "vendor": {
+    "vueFull": {
+      "file": "vue.global.prod.js",
+      "package": "vue",
+      "version": "3.5.43",
+      "bytes": 168331,
+      "sha256": "b72394052eef1eeda1752db3758ce1be6f88016903f22e5241cc732ea307478e",
+      "license": "MIT",
+      "role": "构建期模板编译器（含 compiler），不入产物",
+      "source": "https://registry.npmmirror.com/vue/3.5.43/files/dist/vue.global.prod.js",
+      "sourceAlt": "https://unpkg.com/vue@3.5.43/dist/vue.global.prod.js"
+    },
+    "vueRuntime": {
+      "file": "vue.runtime.global.prod.js",
+      "package": "vue",
+      "version": "3.5.43",
+      "bytes": 109374,
+      "sha256": "f2f1547993b942e5e24f2d6e63577b21739a37a920e09c656b0e87eb0ad55175",
+      "license": "MIT",
+      "role": "产物内联的运行时（无模板编译器；模板由构建期编译为 render 函数）",
+      "source": "https://registry.npmmirror.com/vue/3.5.43/files/dist/vue.runtime.global.prod.js",
+      "sourceAlt": "https://unpkg.com/vue@3.5.43/dist/vue.runtime.global.prod.js",
+      "devCdn": "https://unpkg.com/vue@3.5.43/dist/vue.global.prod.js"
+    }
+  }
+}

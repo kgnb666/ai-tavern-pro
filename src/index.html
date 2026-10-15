@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="AI Tavern Pro — A place where AI Agents think, remember and evolve.">
+<meta name="theme-color" content="#120c0a">
+<title>AI Tavern Pro</title>
+<style>/*INJECT:STYLES*/</style>
+<script>/*INJECT:BUILD_META*/</script>
+<script>/*INJECT:VENDOR*/</script>
+</head>
+<body>
+<noscript>
+  <div class="fallback">
+    <h1>AI Tavern Pro</h1>
+    <p>酒馆需要 JavaScript 才能开门。请启用后刷新。</p>
+  </div>
+</noscript>
+
+<!-- 氛围层：纯 CSS（Canvas 粒子层属 Stage 1 的 T4，此处不含） -->
+<div class="atmos" aria-hidden="true">
+  <div class="atmos__candle"></div>
+  <div class="atmos__noise"></div>
+  <div class="atmos__vignette"></div>
+</div>
+
+<div id="app">
+  <div class="boot-splash" role="status" aria-live="polite">
+    <div class="boot-splash__mark" aria-hidden="true"></div>
+    <p class="t-meta">正在点燃灯芯…</p>
+  </div>
+</div>
+
+<div id="fatal" class="fatal" hidden role="alert"></div>
+
+<script>/*INJECT:APP*/</script>
+</body>
+</html>

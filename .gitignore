@@ -1,0 +1,20 @@
+# ── 密钥与本地开发环境（绝不能进版本控制）────────────────────────
+.dev.vars
+.env
+.env.*
+*.key
+key.txt
+worker/.dev.vars
+
+# ── wrangler 本地状态 ──────────────────────────────────────────
+.wrangler/
+worker/.wrangler/
+
+# ── 依赖（本项目零依赖，防止误生成）───────────────────────────
+node_modules/
+
+# ── 构建临时产物（dev 构建不进交付路径）────────────────────────
+dist/*.dev.html
+
+# ── 部署用页面副本（由 dist/AI-Tavern.html 复制生成）───────────────
+worker/page.html

@@ -1,0 +1,43 @@
+# AI Tavern Pro — AI Gateway 部署配置
+# 密钥（LLM_API_KEY / DIAG_TOKEN）不在此文件：用 `wrangler secret put` 写入。
+# 本文件可进版本控制；.dev.vars 不可。
+
+name = "tavern-api"
+main = "index.js"
+compatibility_date = "2025-06-01"
+
+# 页面托管：单文件产物以 Text 模块内联进 Worker（复制到 worker/page.html 后部署）
+[[rules]]
+type = "Text"
+globs = ["**/*.html"]
+fallthrough = true
+
+# 自定义域名（推荐：对抗 *.workers.dev 的网络阻断；域名须已托管在本账号的 Cloudflare 上）
+# 部署前取消注释并把域名换成你的（子域任选，如 tavern-api.example.com），
+# 并同步把 src/boot.js 的 DEFAULT_API 改为同一域名后重新构建：
+# [[routes]]
+# pattern = "tavern-api.<your-domain>"
+# custom_domain = true
+
+# 非密钥配置（可公开）
+[vars]
+# 允许的浏览器来源，逗号分隔。**故意不包含 "null"**（file:// 打开不放行，stage-0 R3）
+ALLOWED_ORIGINS = "http://localhost:8080,http://127.0.0.1:8080"
+# 限流：单 IP / 全域，每分钟
+RATE_PER_MIN = "20"
+RATE_GLOBAL_PER_MIN = "240"
+# 每日 token 预算（护栏，防公开链接被刷）；0 = 关闭
+DAILY_TOKEN_BUDGET = "300000"
+# 上游超时与地址
+UPSTREAM_TIMEOUT_MS = "90000"
+UPSTREAM_BASE = "https://api.deepseek.com"
+
+# 预算计数与中止证据（免费额度：1GB 存储 / 100K 读/天 / 1K 写/天）
+# 写入已节流到 ≥120s 或每 50 次请求一次 → 最坏 720 写/天，仍在免费额度内
+[[kv_namespaces]]
+binding = "TAVERN_KV"
+id = "fd2d176888fa4904b7fb131e2e932903"
+
+# 指标只保留计数与延迟，不落正文
+[observability]
+enabled = true
